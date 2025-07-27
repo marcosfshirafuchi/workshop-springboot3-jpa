@@ -21,8 +21,17 @@ public class Product implements Serializable {
     private Double price;
     private String imgUrl;
 
-    //Impede o JPA de interpretar
-    @Transient
+    //Transient Impede o JPA de interpretar
+    //@Transient
+
+    //Relacionamentos muitos para muitos
+    @ManyToMany
+    //O JoinColumn define o nome da tabela associativa no banco de dados (name)
+    @JoinTable(name = "tb_product_category",
+            //Define o id do product
+            joinColumns = @JoinColumn(name = "product_id"),
+    //Nome da chave estrangeira da tabela category
+    inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<Category> categories = new HashSet<>();
 
     public Product(){
