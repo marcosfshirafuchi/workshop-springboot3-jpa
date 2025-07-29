@@ -1,5 +1,6 @@
 package com.educandoweb.course.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -33,6 +34,10 @@ public class Product implements Serializable {
     //Nome da chave estrangeira da tabela category
     inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<Category> categories = new HashSet<>();
+
+    //Depois do id. coloca o nome do atributo (product) que esta classe OrderItemPK
+    @OneToMany(mappedBy = "id.product")
+    private Set<OrderItem> items = new HashSet<>();
 
     public Product(){
 
@@ -88,6 +93,17 @@ public class Product implements Serializable {
 
     public Set<Category> getCategories() {
         return categories;
+    }
+
+    //Usa o @JsonIgnore para não dar loop infinito api de Orders
+    @JsonIgnore
+    public Set<Order> orders(){
+        Set<Order> set = new HashSet<>();
+        for (OrderItem x : items){
+            set.add(x.getOrder());
+        }
+
+        return set;
     }
 
     @Override

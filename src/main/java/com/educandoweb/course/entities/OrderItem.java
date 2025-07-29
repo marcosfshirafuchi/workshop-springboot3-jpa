@@ -33,6 +33,7 @@ public class OrderItem implements Serializable {
         this.price = price;
     }
 
+    //Usa o @JsonIgnore para não dar loop infinito api de order
     @JsonIgnore
     public Order getOrder(){
         return id.getOrder();
