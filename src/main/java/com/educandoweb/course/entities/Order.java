@@ -3,6 +3,7 @@ package com.educandoweb.course.entities;
 import com.educandoweb.course.entities.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
+import org.yaml.snakeyaml.DumperOptions;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -34,6 +35,10 @@ public class Order implements Serializable {
     //Relacionamento um order para muitos OrderItem
     @OneToMany(mappedBy = "id.order")
     private Set<OrderItem> items = new HashSet<>();
+
+    //CascadeType.ALL é quando usa o mesmo id para as mesmas classes: Payment e Order
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    private Payment payment;
 
     public Order(){
     }
@@ -82,6 +87,14 @@ public class Order implements Serializable {
 
     public Set<OrderItem> getItems(){
         return items;
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
     }
 
     @Override
